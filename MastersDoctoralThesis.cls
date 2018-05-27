@@ -214,6 +214,10 @@
 }
 \DeclareDocumentCommand{\author}{m}{\newcommand{\authorname}{#1}\renewcommand{\@author}{#1}}
 \NewDocumentCommand{\supervisor}{m}{\newcommand{\supname}{#1}}
+\newcommand*{\supervisorone}[1]{\def\supnameone{#1}}
+\newcommand*{\supervisortwo}[1]{\def\supnametwo{#1}}
+\newcommand*{\supervisorthree}[1]{\def\supnamethree{#1}}
+
 \NewDocumentCommand{\examiner}{m}{\newcommand{\examname}{#1}}
 \NewDocumentCommand{\degree}{m}{\newcommand{\degreename}{#1}}
 \NewDocumentCommand{\addresses}{m}{\newcommand{\addressname}{#1}}
