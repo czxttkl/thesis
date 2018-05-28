@@ -76,22 +76,22 @@ headsepline, % Uncomment to get a line under the header
 %	THESIS INFORMATION
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Thesis Title} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
-\supervisor{Magy Seif El-Nasr} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
+\thesistitle{Pre-Match Recommendations for Influencing Match Outcomes and Player Engagement in Video Games} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
+\supervisor{Magy Seif El-Nasr (Advisor)} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 \supervisorone{Christopher Amato}
 \supervisortwo{Seth Cooper}
 \supervisorthree{Yizhou Sun}
 \examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
 \degree{Doctor of Philosophy} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
-\author{John \textsc{Smith}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+\author{Zhengxing Chen} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
 \addresses{} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
 
-\subject{Biological Sciences} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
+\subject{Computer Sciences} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
 \keywords{} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
-\university{\href{http://www.university.com}{University Name}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
-\department{\href{http://department.university.com}{Department or School Name}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
-\group{\href{http://researchgroup.university.com}{Research Group Name}} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
-\faculty{\href{http://faculty.university.com}{Faculty Name}} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
+\university{Northeastern University} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
+\department{College of Information and Computer Science} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
+\group{Research Group Name} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
+\faculty{faculty name} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
 
 \AtBeginDocument{
 \hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
@@ -123,12 +123,12 @@ headsepline, % Uncomment to get a line under the header
 \begin{minipage}[t]{0.4\textwidth}
 \begin{flushleft} \large
 \emph{Author:}\\
-\href{http://www.johnsmith.com}{\authorname} % Author name - remove the \href bracket to remove the link
+{\authorname} % Author name - remove the \href bracket to remove the link
 \end{flushleft}
 \end{minipage}
 \begin{minipage}[t]{0.4\textwidth}
 \begin{flushright} \large
-\emph{Supervisor:} \\
+\emph{Committee:} \\
 {\supname} \\ % Supervisor name - remove the \href bracket to remove the link  
 {\supnameone} \\
 {\supnametwo} \\ 
@@ -140,7 +140,7 @@ headsepline, % Uncomment to get a line under the header
 
 \large \textit{A thesis submitted in fulfillment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
 \textit{in the}\\[0.4cm]
-\groupname\\\deptname\\[2cm] % Research group name and department name
+\deptname\\\univname\\[2cm] % department name and university name
  
 \vfill
 
@@ -181,19 +181,41 @@ headsepline, % Uncomment to get a line under the header
 %	QUOTATION PAGE
 %----------------------------------------------------------------------------------------
 
-\vspace*{0.2\textheight}
+% \vspace*{0.2\textheight}
 
-\noindent\enquote{\itshape Thanks to my solid academic training, today I can write hundreds of words on virtually any topic without possessing a shred of information, which is how I got a good job in journalism.}\bigbreak
+% \noindent\enquote{\itshape Thanks to my solid academic training, today I can write hundreds of words on virtually any topic without possessing a shred of information, which is how I got a good job in journalism.}\bigbreak
 
-\hfill Dave Barry
+% \hfill Dave Barry
 
 %----------------------------------------------------------------------------------------
 %	ABSTRACT PAGE
 %----------------------------------------------------------------------------------------
 
 \begin{abstract}
-\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
+% \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
+
+For years, video games have garnered the attention of people worldwide, providing a unique environment for entertainment, aesthetic appreciation, story adventure, knowledge acquirement, competition and socialization. The success of video games to attract players would not be possible without their rich in-game elements, such as rules, weapons, equipments, modes, maps, levels, characters, and opponents. These in-game elements influence how players interact with a game, and consequently the outcome of the game (e.g., win, loss, level-up, and milestones unlocks). There has been an extensive body of theories and empirical studies suggesting that game outcomes have a close relationship with player engagement. Therefore, to keep players engaged, in-game elements need to be carefully crafted and presented to players. 
+
+% Such variety and richness     match outcomes are believed to be closely related to player engagement and revenues made by game companies. Based on individual players' information and game contexts, personalized recommendation is one family of proposed methods, wherein dynamic game contents are recommended to players in order to influence their win rates. 
+
+In this thesis I propose to use artificial intelligence (AI) techniques in order to recommend players in-game elements for influencing game outcomes. While there are numerous scenarios where in-game element recommendations are applicable, my thesis is delimited by the following boundaries: (1) the goals for influencing game outcomes by recommendations are to increase a player's win rate and engagement; (2) the specific types of in-game elements for recommendations are starting items, characters and opponents; (3) the context of applying the recommendations is within the pre-match stage, when in-game elements determined before a match starts could already have an impact on the final match outcome and player engagement.
+
+% As there can be various goals for influencing game outcomes and video games sport different designs and in-game elements, I am not able to examine every place where in-game element recommendation can be applied. Rather, I focus on the following boundaries delimiting my research.
+
+Within these boundaries, I propose three recommendation systems with each coping with different challenges:
+
+First, I propose a deck recommendation system, \textit{Q-DeckRec}, for recommending winning-effective decks in one-vs-one Collectible Card Games (CCG). A deck is a set of cards seen as the starting items in CCG. Q-DeckRec deals with the challenge of how to quickly identify a winning-effective deck from a large number of possible choices using minimal computational resources.
+
+Second, I propose a character recommendation system, \textit{DraftArt}, for recommending winning-effective characters in Multi-player Online Battle Arena (MOBA) games. Matches in MOBA games are team-based. In the pre-match stage, each player needs to select a distinct character with unique abilities which should synergize the teammates' and counter the opponents'  in the match. As the character selection is progressive, the challenge that DraftArt deals with is to predict which characters will be selected by others, which embraces a large number of possibilities, and efficiently identify winning-effective characters which will fit the ultimate character line-up.
+
+Third, I propose an opponent recommendation system, a matchmaking framework named \textit{EOMM}, in which expected match outcomes within recommended opponents optimize all involved players' engagement. While the aforementioned starting item and character recommendation systems aim for  increasing the win rate of one player, which can be seen as an intermediate goal to improve player engagement, the opponent recommendation system directly operate on the optimization of population-wise player engagement through opponent matching.
+
+% In each match, human players (and possibly computer agents) compete with each other.
+% First, I focus on recommendations in the pre-match stage in video games played based on small sessions called matches. In the pre-match stage, some in-game elements determined before the match starts could already have an impact on the final match outcome and player engagement.
+% Second, I focus on two goals for employing recommendations to influence game outcomes: to increase a player's win rate and to increase player engagement. The two goals are progressive, in a sense that increasing a player's win rate is an intermediate and indirect step to improve player engagement.
+% Third, I focus on the recommendations of three specific types of in-game elements: starting items, in-game characters and opponents. These are very common in-game elements in video games nowadays. However, identifying right recommendations of them face different challenges: (1) I propose  personalized recommendation system for suggesting starting items  to optimal for a player's win rate. It could be a challenging task for the player to choose winning-effective starting items since a large amount of choices could be available depending on the strategies of the player and the opponent; (2) I propose an in-game character recommendation system for suggesting team-based video games with the goal to maximize a player's win rate.Last, I propose a matchmaking system for opponent recommendation, in which expected match outcomes within recommended opponents optimize all involved players' engagement. 
+
+% A distinctive feature of personalized recommendation in PvP games is that influencing one's winning probability will adversely change that of the opponent(s) who are human players too. The initial item recommendation system exemplifies \textit{how} match outcomes can be affected positively \textit{from one side}, while the opponent recommendation system exemplifies not only \textit{how} but also \textit{how much} match outcomes should be influenced when we consider \textit{a population of players}.
 \end{abstract}
 
 %----------------------------------------------------------------------------------------
@@ -202,7 +224,15 @@ The Thesis Abstract is written here (and usually kept to just this page). The pa
 
 \begin{acknowledgements}
 \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
-The acknowledgments and the people to thank go here, don't forget to include your project advisor\ldots
+I would like to thank my advisor Prof. Magy Seif El-Nasr for her patience, motivation, and knowledge. I could not forget our first meeting where she shed lights on game analytics and encouraged me to take on this direction. Without her support over the last five years, I could never have been so fortunate to carve a niche in the interdisciplinary research area of video games and artificial intelligence.
+
+My sincere thanks also go to my thesis committee members: Prof. Christopher Amato, Prof. Yizhou Sun, and Prof. Seth Cooper. They provided me with enormous helps and inspired my research in diverse perspectives. 
+
+I am grateful to all collaborators I worked with during my research as well as colleagues I met during my internships at Electronic Arts, eBay, Google and Facebook. My special gratefulness goes to Prof. Truong-Huy Nguyen for suggesting me PhD and life advice, and Dr. Su Xue and Dr. John Kolen for my incredible internship experience at Electronic Arts.
+
+I cannot thank more than enough to my parents and grandparents, who have taught me to become kind, strong, and wise throughout my whole life.
+
+Last but by no means least, I would like to express my thankfulness to my wife, Shiyun, for accompanying me through the so far most challenging yet most memorable time in my life. We will have much more adventure to experience in the future.
 \end{acknowledgements}
 
 %----------------------------------------------------------------------------------------
