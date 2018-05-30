@@ -26,7 +26,7 @@
 11pt, % The default document font size, options: 10pt, 11pt, 12pt
 %oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
 english, % ngerman for German
-singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
+doublespacing, % line spacing, alternatives: singlespacing, onehalfspacing or doublespacing
 %draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
 %nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
 %liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
@@ -44,8 +44,9 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{mathpazo} % Use the Palatino font by default
 
 \usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
-
-\addbibresource{example.bib} % The filename of the bibliography
+\addbibresource{example,bib_game,bib_tech} % The filename of the bibliography
+% \bibliographystyle{apalike}
+% \bibliography{bib_tech,bib_game}
 
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 
@@ -56,6 +57,85 @@ headsepline, % Uncomment to get a line under the header
 % \ifoptionfinal{}{\pagecolor[HTML]{F8DF9C}}
 \ifoptionfinal{}{\pagecolor[HTML]{cac4b5}}
 
+% math
+\usepackage{amsmath,amssymb,amsfonts}
+
+% For highlighting
+\usepackage{color,soul}
+
+% table row spacing
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+
+% For bold vectors
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+
+% For argmax
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% merge cell vertically in table
+\usepackage{multirow}
+
+% itermize no left margin
+\usepackage{enumitem}
+
+% For algorithms
+\usepackage[ruled]{algorithm2e} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 hyperlink for whole citation                    %
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{\usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{\usebibmacro{citeyear}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+    \printtext[bibhyperref]{\usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+    \printtext[bibhyperref]{\usebibmacro{citeyear}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+  \printtext[bibhyperref]{ \usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcitetext}[\mkbibfootnotetext]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{\usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\boolfalse{cbx:parens}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{\usebibmacro{textcite}}}
+  {\ifbool{cbx:parens}
+     {\bibcloseparen\global\boolfalse{cbx:parens}}
+     {}%
+   \multicitedelim}
+  {\usebibmacro{textcite:postnote}}
+%---------------------------------------------------------------------------
 
 
 %----------------------------------------------------------------------------------------
@@ -198,15 +278,15 @@ For years, video games have garnered the attention of people worldwide, providin
 
 % Such variety and richness     match outcomes are believed to be closely related to player engagement and revenues made by game companies. Based on individual players' information and game contexts, personalized recommendation is one family of proposed methods, wherein dynamic game contents are recommended to players in order to influence their win rates. 
 
-In this thesis I propose to use artificial intelligence (AI) techniques in order to recommend players in-game elements for influencing game outcomes. While there are numerous scenarios where in-game element recommendations are applicable, my thesis is delimited by the following boundaries: (1) the goals for influencing game outcomes by recommendations are to increase a player's win rate and engagement; (2) the specific types of in-game elements for recommendations are starting items, characters and opponents; (3) the context of applying the recommendations is within the pre-match stage, when in-game elements determined before a match starts could already have an impact on the final match outcome and player engagement.
+In this thesis I propose to use artificial intelligence (AI) techniques in order to recommend players in-game elements for influencing game outcomes. While there are numerous scenarios where in-game element recommendations are applicable, my thesis is delimited by the following boundaries: (1) the goals of influencing game outcomes are to increase a player's win rate and engagement; (2) the specific types of in-game elements for recommendations are starting items, characters and opponents; (3) the context of applying the recommendations is within the pre-match stage, when in-game elements determined before a match starts could already have an impact on the final match outcome and player engagement.
 
 % As there can be various goals for influencing game outcomes and video games sport different designs and in-game elements, I am not able to examine every place where in-game element recommendation can be applied. Rather, I focus on the following boundaries delimiting my research.
 
 Within these boundaries, I propose three recommendation systems with each coping with different challenges:
 
-First, I propose a deck recommendation system, \textit{Q-DeckRec}, for recommending winning-effective decks in one-vs-one Collectible Card Games (CCG). A deck is a set of cards seen as the starting items in CCG. Q-DeckRec deals with the challenge of how to quickly identify a winning-effective deck from a large number of possible choices using minimal computational resources.
+First, I propose a deck recommendation system, \textit{Q-DeckRec}, for recommending winning-effective decks in one-vs-one Collectible Card Games (CCG). A deck is a set of cards seen as the starting items in CCG. Q-DeckRec deals with the challenge of how to quickly identify a winning-effective deck from a large number of possible choices using minimal computational resources; thus Q-DeckRec is designed to be suitable for large-scale or real-time application.
 
-Second, I propose a character recommendation system, \textit{DraftArt}, for recommending winning-effective characters in Multi-player Online Battle Arena (MOBA) games. Matches in MOBA games are team-based. In the pre-match stage, each player needs to select a distinct character with unique abilities which should synergize the teammates' and counter the opponents'  in the match. As the character selection is progressive, the challenge that DraftArt deals with is to predict which characters will be selected by others, which embraces a large number of possibilities, and efficiently identify winning-effective characters which will fit the ultimate character line-up.
+Second, I propose a character recommendation system, \textit{DraftArt}, for recommending winning-effective characters in Multi-player Online Battle Arena (MOBA) games. Matches in MOBA games are team-based. In the pre-match stage, each player needs to select a character with unique abilities which should synergize the teammates' and counter the opponents' in the match. As the character selection is progressive, the challenge that DraftArt deals with is to predict which characters will be selected by others, which embraces a large number of possibilities, and efficiently identify winning-effective characters which will fit the ultimate character line-up.
 
 Third, I propose an opponent recommendation system, a matchmaking framework named \textit{EOMM}, in which expected match outcomes within recommended opponents optimize all involved players' engagement. While the aforementioned starting item and character recommendation systems aim for  increasing the win rate of one player, which can be seen as an intermediate goal to improve player engagement, the opponent recommendation system directly operate on the optimization of population-wise player engagement through opponent matching.
 
@@ -228,7 +308,9 @@ I would like to thank my advisor Prof. Magy Seif El-Nasr for her patience, motiv
 
 My sincere thanks also go to my thesis committee members: Prof. Christopher Amato, Prof. Yizhou Sun, and Prof. Seth Cooper. They provided me with enormous helps and inspired my research in diverse perspectives. 
 
-I am grateful to all collaborators I worked with during my research as well as colleagues I met during my internships at Electronic Arts, eBay, Google and Facebook. My special gratefulness goes to Prof. Truong-Huy Nguyen for suggesting me PhD and life advice, and Dr. Su Xue and Dr. John Kolen for my incredible internship experience at Electronic Arts.
+I am grateful to all collaborators I worked with during my research as well as colleagues I met during my internships at Electronic Arts, eBay, Google and Facebook. My special gratefulness goes to Prof. Truong-Huy Nguyen for suggesting me PhD and life advice, and Dr. Su Xue and Dr. John Kolen for supervising my incredible internship experience at Electronic Arts.
+
+I thank Prof. Karl Lieberherr and Prof. Stephen Intille for their kind helps in the first year of my PhD. I also thank all my friends and lab mates for their support, understanding, and encouragement.
 
 I cannot thank more than enough to my parents and grandparents, who have taught me to become kind, strong, and wise throughout my whole life.
 
@@ -285,11 +367,11 @@ $\omega$ & angular frequency & \si{\radian} \\
 
 \end{symbols}
 
-%----------------------------------------------------------------------------------------
-%	DEDICATION
-%----------------------------------------------------------------------------------------
+% %----------------------------------------------------------------------------------------
+% %	DEDICATION
+% %----------------------------------------------------------------------------------------
 
-\dedicatory{For/Dedicated to/To my\ldots} 
+% \dedicatory{For/Dedicated to/To my\ldots} 
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - CHAPTERS
@@ -302,11 +384,14 @@ $\omega$ & angular frequency & \si{\radian} \\
 % Include the chapters of the thesis as separate files from the Chapters folder
 % Uncomment the lines as you write the chapters
 
-\include{Chapters/Chapter1}
-%\include{Chapters/Chapter2} 
-%\include{Chapters/Chapter3}
-%\include{Chapters/Chapter4} 
-%\include{Chapters/Chapter5} 
+\include{Chapters/Chapter_intro}
+\include{Chapters/Chapter_relatework}
+\include{Chapters/Chapter_qdeckrec}
+\include{Chapters/Chapter_draftart} 
+\include{Chapters/Chapter_eomm} 
+\include{Chapters/Chapter_conclusion}
+\include{Chapters/Chapter_format} 
+
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - APPENDICES

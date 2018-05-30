@@ -1,0 +1,70 @@
+\chapter{Related Works} % Main chapter title
+
+\label{chapter:relatework} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+\subsection{ Match Outcome and Player Engagement Study}
+A straightforward way to define player engagement is the "continuation desire" to play the game repeatedly during play or over a longer period of time~\cite{schoenau2011player}. The triggers and components of player engagement have been extensively studied in many theoretical frameworks. Player engagement have been related to many other theories, such as happiness~\cite{sweetser2005gameflow,flow1990psychology,chen2007flow}, motivations~\cite{przybylski2010motivational,ryan2006motivational,yee2006demographics,yee2006motivations,sherry2006video}, presence~\cite{lombard1997heart,tamborini2006role}, immersion~\cite{mcmahan2003immersion,brown2004grounded,jennett2008measuring,ermi2005fundamental}, pleasure~\cite{costello2009tool}, enjoyment~\cite{ijsselsteijn2013game,klimmt2003dimensions}, fun~\cite{koster2013theory} and playability~\cite{federoff2003improving,federoff2002heuristics,desurvire2004using,nacke2009playability}. On the other hand, empirical studies often focus on concrete measurements of player engagement, such as time or money spent in the game, the number of matches played within a time window, or churn risk. The term ``churn'' is used by convention, which actually represents a status of disengagement, i.e., a player not playing any games within a subsequent time frame, not necessarily a permanent churn. We define churn risk as the proportion of total current players who will stop playing the game over a period of time. 
+
+Match outcomes have close relationship with player engagement. On the one hand, the pursuit of victory and achievement is a common reason of player engagement~\cite{schoenau2011player,yee2006motivations,sherry2006video,wu2010falling}. Victorious match outcomes is one kind of fulfillment of victory and achievement. This raises the importance to carefully maintain the winning rate for players, especially those inexperienced players who have difficulty of winning a match. On the other hand, players look for the level of competitiveness commensurate with their skills. Central to flow theory proposed by Cs\'{i}kszentimih\'{a}lyi~\cite{sweetser2005gameflow,flow1990psychology,chen2007flow} is the idea that there should be an optimal match between the skills an individual possesses and the challenges presented by an activity. Therefore, monotonous match outcomes are not desirable because they indicate consistent over-/under-challenging player experience. 
+
+Churn prediction will serve as an important building component to guide opponent recommendation in our proposed work. Churn prediction has been applied within various disciplines for decades, such as telecommunications \cite{ferreira2004data}, online advertisements \cite{yoon2010prediction} and insurance \cite{morik2004analysing}. Video games have also sparked a number of churn analysis studies. For instance, Weber~et~al. \cite{weber2011modeling} built a regression model to predict the number of games played. They also used the model to aid game design by identifying the most influential features on player retention. Hadiji~et~al. \cite{hadiji2014predicting} established the fundamental in churn prediction in free-to-play (F2P) games by suggesting definitions of various churn behaviors, proposing universal behavioral telemetry, and comparing different machine learning models across five commercial F2P games. Runge~et~al. \cite{runge2014churn} not only trained a churn prediction model for a casual social game but also showed how the game can leverage the model to increase the effectiveness of promotions to players. 
+
+It is important to note the relationship between our proposed pre-match personalized recommendation techniques and the existing studies on player engagement and match outcomes. The initial item recommendation aims to recommend the optimal initial items to maximize one's win rate, i.e., to influence match outcomes positively to the largest extent. Therefore, it is a direct method to affect match outcomes but needs additional cares if used to improve player engagement. The opponent recommendation uses the player engagement as a criteria to seek personalized opponents and adjust match outcomes. Therefore, it simultaneously affects match outcomes and player engagement.
+
+
+\subsection{Backgrounds of Collectible Card Game}
+We briefly introduce the background for \textit{Collectible Card Games} (CCGs), the testbed for initial item recommendation.
+
+Each CCG has a fundamental set of rules that describes the players' objectives, the categories of cards used in the game, and the basic rules by which the cards interact. The CCG that we will use is 1-vs-1 and turn-based. In a match of the CCG, two players take turn to make movements. Each player is initialized with certain health points. The victory objective is to destroy the opponent's health by playing the cards in possession. Each player is also initialized with certain mana points. Mana points get refresh in each turn and increase as the game proceeds. One card is drawn from the player's \textit{deck} to his hands at the beginning of his each turn. Deck is a collection of cards that the player selects from an available pool of cards before the match starts. After the draw, the player uses the cards he has drawn to his hands to interact with the game in order to gain an advantage over the opponent. Each card is assigned with a fixed mana cost. When a card is played out of his hands, it costs the designated amount of mana from the player. The player's turn ends when he has no available actions to perform or he voluntarily relinquishes his turn. 
+
+Each card is associated with effects, attributes and rules to play it. There are two types of cards, \textit{Minion} and \textit{Spell}. Minion cards, when cast from the player's hands, stay in the game helping the player attack and defend until the opponent takes actions to eliminate them. Spell cards will adjust the game environment as per their designated effects, for instance, one-time damage to opponent or his minions, or recover health to the player or his own minions, or summon new minions. 
+
+%Algorithm~1 shows the typical game flow of the CCG. 
+%
+%\begin{algorithm}
+%    \SetKwInOut{Input}{Input}
+%
+%    \SetKwFunction{Armijo}{armijo} 
+%    \Input{$Player 1$, $Player 2$ with their customized decks}
+%
+%    \BlankLine
+%    \While{game not end} {
+%    
+%    \BlankLine
+%    $curPlayer \leftarrow \text{alternate between } Player1 \text{ and } Player 2$ 
+%    
+%    
+%    \BlankLine
+%	$curPlayer$ draws one card from own deck  
+%  
+%   \BlankLine
+%    $curPlayer$ uses the cards in hands and in play to interact with the game
+%    		
+%   \BlankLine 	
+%    
+%    }
+%    \caption{Typical Game Flow of 1-vs-1 Turn-Based CCG}
+%\end{algorithm}
+
+Deck is the initial equipment in CCGs. Because the size of total available cards (usually hundreds or thousands) is much larger than the size of deck (usually a few dozens), CCG players need to strategically customize their decks to take advantage of favorable card interactions, combinations and statistics. However, some inexperienced players have too limited knowledge to construct a competent deck to win a match. This could result in their frustration and eventually disengagement for the game due to the lack of victorious experience~\cite{schoenau2011player,yee2006motivations,sherry2006video,wu2010falling}. 
+
+A CCG simulator is implemented by us with rules encoded as exactly described. We implemented 200 cards with attributes and abilities taken reference from the cards in a commercial CCG Hearthstone (Blizzard Entertainment, Inc.). However, the exact attributes and abilities are randomly varied to avoid infringement on their intellectual properties. The size of a deck is 30 in the CCG.    
+
+
+\subsection{Recommendation Techniques in PvP Pre-Match}
+We will use two subsections to discuss the state-of-the-arts in initial item recommendation and opponent recommendation.
+
+
+\subsubsection{Deck Recommendation}~\label{deckrec_prev}
+Deck recommendation is a novel topic which have been studied by only a few works. The existing works can basically be divided into two directions. First, intuition-driven methods decide which cards to be included based on the popularity of cards from collected historical data~\cite{frankkarsten,willfancher}. The underlying intuition is that popularly used cards are very likely to be strong ones as a result people favor them. However, these methods do not guarantee the assembled deck of the most popular cards is competitive. Stiegler et al.~\cite{stiegler2016hearthstone} propose a utility system to search deck with more types of game-specific heuristics added besides card popularity, including mana curve, strategic parameters, cost effectiveness and card synergies. However, all intuition-driven methods are manually heavy and not easy to transfer to other games intelligently. Second, Garc{\'\i}a-S{\'a}nchez et al.~\cite{garcia2016evolutionary} proposed to use Evolutionary Algorithm~\cite{simon2013evolutionary} to iteratively modify decks and select ones with faithful fitness values imitating the process of natural evolution. The fitness value is the average win rate of the candidate deck pitting against a few common used decks while a default, greedy-based AI is used for both sides in every match. However, the limitation of their method is that a deck's strength may not be completely realized by just using the universal, greedy-based AI as used in the fitness value evaluation. Moreover, the evolution of candidate decks is currently totally random
+rather than following some logical sense similar to human players. For example, rather than randomly replacing a card with another card, they do not want to break good card combinations or replace a card with a similar but much weaker one. As a result, the fitness landscape in the current EA algorithm~\cite{garcia2016evolutionary} is quite agitated and the process to find an ideal deck requires a large computational cost. Furthermore, the EA-based deck recommendation is not reusable. Each time a deck is asked to recommend, the EA-based deck recommendation has to restart the whole process of evolution without any prior deck search experience transferred. Therefore, the EA-based algorithm is not a practical implementation if deck recommendation needs to be requested in a large scale. For example, game companies might want to implement a deck recommendation API to serve a large population of new players.
+
+
+% The other disadvantage of all the abovementioned works is that they fail to give human-understandable instruction on the recommended decks. However, we think giving strategical advice along the deck recommendation is a very important step to improve player awareness. 
+
+\subsubsection{Opponent Recommendation}
+To our best knowledge, we have not seen any existing opponent recommendation method that formally treats the opponent recommendation task as an optimization problem to maximize player engagement.
+ In practice, the concept of opponent recommendation is often implemented as matchmaking services which connect players to form PvP matches. A fair amount of matchmaking systems simply assume that skill balanced games are good for engagement \cite{graepel2006ranking,sweetser2005gameflow,flow1990psychology,chen2007flow} and hence resort to skill rating algorithms~\cite{glickman1999parameter,elo1978rating,herbrich:trueskill} to identifying similarly skilled opponents. My\'{s}lak and Deja \cite{myslak2014developing} suggests additional information about player preferences in in-game avatar roles can further improve fairness-based matchmaking systems. A few researchers have explored methods to improve player engagement through matchmaking. Delalleau et al. \cite{Delalleau2012} proposed to train a neural network based architecture which predicts player enjoyment based on their historical statistics. They measured enjoyment by directly asking players for feedback after each match. However, their enjoyment-based matchmaking has not been verified in real games. Plus, whether players are willing to give feedback about enjoyment and how reliable their feedback would be are questionable. Jim{\'e}nez-Rodr{\i}guez et al. \cite{jimenez2011matchmaking} proposed that matchmaking could be based on preferred roles by players. They argue that a fun match should have players act in  roles with perceivably joyful role distribution. However, it is still a conceptual, heuristic-based method without experiment showing that such matchmaking system indeed improves concrete engagement metrics. 
+
+
+
