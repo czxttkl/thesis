@@ -44,7 +44,7 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{mathpazo} % Use the Palatino font by default
 
 \usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
-\addbibresource{example,bib_game,bib_tech} % The filename of the bibliography
+\addbibresource{example,bib_game,bib_tech,bib_mcts,bib_moba,bib_mywork} % The filename of the bibliography
 % \bibliographystyle{apalike}
 % \bibliography{bib_tech,bib_game}
 
@@ -82,8 +82,17 @@ headsepline, % Uncomment to get a line under the header
 % For algorithms
 \usepackage[ruled]{algorithm2e} 
 
+% URL line break but doesn't work all the time
+\usepackage{etoolbox}
+\appto\UrlBreaks{\do\-}
+
+% adjustwidth in table for over wide tables
+% see https://stackoverflow.com/questions/722613/centering-a-table-wider-than-the-text-column
+\usepackage{chngpage}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                 hyperlink for whole citation                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \DeclareCiteCommand{\cite}
   {\usebibmacro{prenote}}
   {\usebibmacro{citeindex}%
@@ -272,9 +281,9 @@ headsepline, % Uncomment to get a line under the header
 %----------------------------------------------------------------------------------------
 
 \begin{abstract}
-% \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
+\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
 
-For years, video games have garnered the attention of people worldwide, providing a unique environment for entertainment, aesthetic appreciation, story adventure, knowledge acquirement, competition and socialization. The success of video games to attract players would not be possible without their rich in-game elements, such as rules, weapons, equipments, modes, maps, levels, characters, and opponents. These in-game elements influence how players interact with a game, and consequently the outcome of the game (e.g., win, loss, level-up, and milestones unlocks). There has been an extensive body of theories and empirical studies suggesting that game outcomes have a close relationship with player engagement. Therefore, to keep players engaged, in-game elements need to be carefully crafted and presented to players. 
+For years, video games have garnered the attention of people worldwide, providing a unique environment for entertainment, aesthetic appreciation, story adventure, knowledge acquirement, competition and socialization. The success of video games to attract players would not be possible without their rich in-game elements, such as weapons, maps, levels, and characters either played by human players or computer programs. These in-game elements influence how players interact with a game, and consequently the outcome of the game (e.g., win, loss, level-up, and milestones unlocks). There has been an extensive body of theories and empirical studies suggesting that game outcomes have a close relationship with player engagement. Therefore, to keep players engaged, in-game elements need to be carefully crafted and presented to players. 
 
 % Such variety and richness     match outcomes are believed to be closely related to player engagement and revenues made by game companies. Based on individual players' information and game contexts, personalized recommendation is one family of proposed methods, wherein dynamic game contents are recommended to players in order to influence their win rates. 
 
@@ -282,13 +291,13 @@ In this thesis I propose to use artificial intelligence (AI) techniques in order
 
 % As there can be various goals for influencing game outcomes and video games sport different designs and in-game elements, I am not able to examine every place where in-game element recommendation can be applied. Rather, I focus on the following boundaries delimiting my research.
 
-Within these boundaries, I propose three recommendation systems with each coping with different challenges:
+Within these boundaries, I propose three recommendation systems with each coping with different goals and challenges:
 
-First, I propose a deck recommendation system, \textit{Q-DeckRec}, for recommending winning-effective decks in one-vs-one Collectible Card Games (CCG). A deck is a set of cards seen as the starting items in CCG. Q-DeckRec deals with the challenge of how to quickly identify a winning-effective deck from a large number of possible choices using minimal computational resources; thus Q-DeckRec is designed to be suitable for large-scale or real-time application.
+First, I propose a deck recommendation system, \textit{Q-DeckRec}, for recommending winning-effective decks in one-vs-one Collectible Card Games (CCG). A deck is a set of cards seen as the starting items in CCG. Q-DeckRec deals with the challenge of how to quickly identify a winning-effective deck from a large number of possible choices using minimal computational resources; thus Q-DeckRec is designed to be suitable for large-scale or real-time recommendation application.
 
 Second, I propose a character recommendation system, \textit{DraftArt}, for recommending winning-effective characters in Multi-player Online Battle Arena (MOBA) games. Matches in MOBA games are team-based. In the pre-match stage, each player needs to select a character with unique abilities which should synergize the teammates' and counter the opponents' in the match. As the character selection is progressive, the challenge that DraftArt deals with is to predict which characters will be selected by others, which embraces a large number of possibilities, and efficiently identify winning-effective characters which will fit the ultimate character line-up.
 
-Third, I propose an opponent recommendation system, a matchmaking framework named \textit{EOMM}, in which expected match outcomes within recommended opponents optimize all involved players' engagement. While the aforementioned starting item and character recommendation systems aim for  increasing the win rate of one player, which can be seen as an intermediate goal to improve player engagement, the opponent recommendation system directly operate on the optimization of population-wise player engagement through opponent matching.
+Third, I propose an opponent recommendation system, a matchmaking framework named \textit{EOMM}, in which expected match outcomes within recommended opponents optimize all involved players' engagement. While the aforementioned starting item and character recommendation systems aim for  increasing the win rate of one player, which can be seen as an intermediate step to improve player engagement, EOMM directly operates on the optimization of population-wise player engagement through opponent recommendation (matchmaking).
 
 % In each match, human players (and possibly computer agents) compete with each other.
 % First, I focus on recommendations in the pre-match stage in video games played based on small sessions called matches. In the pre-match stage, some in-game elements determined before the match starts could already have an impact on the final match outcome and player engagement.
@@ -327,16 +336,16 @@ Last but by no means least, I would like to express my thankfulness to my wife, 
 
 \listoftables % Prints the list of tables
 
-%----------------------------------------------------------------------------------------
-%	ABBREVIATIONS
-%----------------------------------------------------------------------------------------
+% %----------------------------------------------------------------------------------------
+% %	ABBREVIATIONS
+% %----------------------------------------------------------------------------------------
 
-\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
+% \begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
 
-\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere\\
-\textbf{WSF} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or\\
+% \textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere\\
+% \textbf{WSF} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or\\
 
-\end{abbreviations}
+% \end{abbreviations}
 
 % %----------------------------------------------------------------------------------------
 % %	PHYSICAL CONSTANTS/OTHER DEFINITIONS
@@ -351,21 +360,21 @@ Last but by no means least, I would like to express my thankfulness to my wife, 
 
 % \end{constants}
 
-%----------------------------------------------------------------------------------------
-%	SYMBOLS
-%----------------------------------------------------------------------------------------
+% %----------------------------------------------------------------------------------------
+% %	SYMBOLS
+% %----------------------------------------------------------------------------------------
 
-\begin{symbols}{lll} % Include a list of Symbols (a three column table)
+% \begin{symbols}{lll} % Include a list of Symbols (a three column table)
 
-$a$ & distance & \si{\meter} \\
-$P$ & power & \si{\watt} (\si{\joule\per\second}) \\
-%Symbol & Name & Unit \\
+% $a$ & distance & \si{\meter} \\
+% $P$ & power & \si{\watt} (\si{\joule\per\second}) \\
+% %Symbol & Name & Unit \\
 
-\addlinespace % Gap to separate the Roman symbols from the Greek
+% \addlinespace % Gap to separate the Roman symbols from the Greek
 
-$\omega$ & angular frequency & \si{\radian} \\
+% $\omega$ & angular frequency & \si{\radian} \\
 
-\end{symbols}
+% \end{symbols}
 
 % %----------------------------------------------------------------------------------------
 % %	DEDICATION
@@ -390,7 +399,7 @@ $\omega$ & angular frequency & \si{\radian} \\
 \include{Chapters/Chapter_draftart} 
 \include{Chapters/Chapter_eomm} 
 \include{Chapters/Chapter_conclusion}
-\include{Chapters/Chapter_format} 
+% \include{Chapters/Chapter_format} 
 
 
 %----------------------------------------------------------------------------------------
@@ -402,7 +411,7 @@ $\omega$ & angular frequency & \si{\radian} \\
 % Include the appendices of the thesis as separate files from the Appendices folder
 % Uncomment the lines as you write the Appendices
 
-\include{Appendices/AppendixA}
+% \include{Appendices/AppendixA}
 %\include{Appendices/AppendixB}
 %\include{Appendices/AppendixC}
 
