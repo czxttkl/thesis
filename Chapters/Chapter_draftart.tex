@@ -4,7 +4,7 @@
 
 \section{Introduction}
 
-Multiplayer Online Battle Arena (MOBA) is one of the most popular contemporary e-sports. Games such as \textit{League of Legends} (Riot Games) and \textit{DOTA 2} (Valve Corporation) have attracted millions of players to play and watch~\cite{playerbase2014,27million}. In a classic match of such games, two teams, each composed of five players, combat in a virtual game map, the goal of which is to beat the opposite team by destroying their base. Each player controls an in-game avatar, known as \textit{heroes}, to co-operate with other teammates in attacking opponents' heroes, armies, defensive structures, and ultimately base, while defending their own in-game properties. 
+Multiplayer Online Battle Arena (MOBA) is one of the most popular contemporary e-sports. Games such as \textit{League of Legends} (Riot Games) and \textit{DOTA 2} (Valve Corporation) have attracted millions of players to play and watch~\cite{lol_fanbase,lol_27million}. In a classic match of such games, two teams, each composed of five players, combat in a virtual game map, the goal of which is to beat the opposite team by destroying their base. Each player controls an in-game avatar, known as \textit{heroes}, to co-operate with other teammates in attacking opponents' heroes, armies, defensive structures, and ultimately base, while defending their own in-game properties. 
 
 The selection of heroes, also known as \textit{pick} or \textit{draft}, takes place before each match starts and alternates between two teams until each player has selected one hero. The alternating order of drafting is ``1-2-2-2-2-1'', meaning that the first team picks one hero, followed by the second team picking two heroes, then the first team picking two heroes, and so on. The process ends with the second team picking their last hero. We refer to the 10 heroes in a completed draft as a \textit{hero line-up}. 
 
@@ -121,7 +121,7 @@ As an alternative to minimax, \textit{Monte Carlo Tree Search} (MCTS)~\cite{coul
 
 % In the search tree, each node represents a state, while directed edges to child nodes represent actions leading to consequent states. There exist various MCTS variations differing from each other by how the four steps are implemented and enhanced, which eventually affects how the search tree is built~\cite{nguyen2014bootstrapping}.
 
-A draft in a normal MOBA is regarded as a combinatorial game with a branching factor at least $100$ and depth 10, since popular MOBA games such as League of Legends and DOTA 2 sport more than 100 heroes to be selected for each of the 10 picks in a draft. As the branching factor is very large in this case, which makes minimax hardly a feasible approach, we propose to apply MCTS to compute the optimal pick for the current player. 
+A draft in a normal MOBA is regarded as a combinatorial game with a branching factor at least $100$ and depth 10, since popular MOBA games such as League of Legends and DOTA 2 sport more than 100 heroes to be selected for each of the 10 picks in a draft. As the branching factor is very large in this case, which makes minimax hardly a feasible approach, we propose to apply MCTS to compute the optimal pick for the current player. Though having a long history in game playing applications, MCTS has just started to be applied in sequential recommendation problems like ours. MCTS is especially suitably to problems where a sequence of recommendations needs to be made and the order of the recommendations could affect user experience. One notable example is using MCTS to recommend song lists that satisfy users' song transition preferences in a music streaming service~\cite{}.
 
 
 
@@ -246,6 +246,7 @@ We design four strategies for hero pick recommendation and test their effectiven
 \end{algorithm}
 
 \begin{table*}
+ \begin{adjustwidth}{-.5in}{-.5in}
   \caption{Mean predicted win rate of $UCT_{n, 1}$ (row) vs. $UCT_{n, c}$ (column). Numbers are from the view of the row strategy. Bold cells indicate the best value of $c$ for $UCT_{n,c}$ for each $n$, as they force $UCT_{n,1}$ have the lowest win rate.}
   \label{tab:param_set}
   \centering
@@ -259,21 +260,22 @@ We design four strategies for hero pick recommendation and test their effectiven
     $UCT_{800, 1}$ & 0.561 & 0.544 & 0.527 & 0.509 & 0.488 & \textbf{0.485} & 0.5 & 0.525 \\
     $UCT_{1600, 1}$ & 0.606 & 0.577 & 0.563 & 0.545 & 0.510 & \textbf{0.492} & 0.5 & 0.516 \\
   \bottomrule
-\end{tabular}
+	\end{tabular}
+  \end{adjustwidth}
 \end{table*}
 
 
 The four experimented strategies include:
 \begin{itemize}[leftmargin=*]
 \item \textbf{UCT}: this strategy is what we propose in Section~\ref{sec:methodologies}. We will use $UCT_{n,c}$ to denote a specific UCT version with $n$ iterations allowed and an exploration term $c$. 
-\item \textbf{Association Rules (AR)}: this strategy was proposed by Hanke and Chaimowicz~\cite{hanke2017reco}. Two sets of association rules, namely ``ally rules'' and ``enemy rules'', are extracted from the collected matches. Ally rules and enemy rules represent hero subsets that appear frequently in the same winning team or in the opposite team, respectively. At each turn, the strategy looks for the extracted association rules containing both the heroes picked already and the heroes not picked yet. Those not picked yet will be selectively added to a candidate pool, from which the recommended hero will be uniformly sampled. In our implementation, we adopt the best criteria claimed by the authors: association rules are mined with minmum support $0.01\%$, and the metrics for selectively adding heroes to the candidate pool are ``win rate'' and ``confidence'' for ally rules and enemy rules, respectively. Readers can refer to the original paper~\cite{hanke2017reco} for more details on the approach. 
-\item \textbf{Highest Win Rate (HWR)}: each time, pick the hero with the highest win rate, based on frequency counts on our dataset. 
+\item \textbf{Association Rules (AR)}: this strategy was proposed by Hanke and Chaimowicz~\cite{hanke2017reco}. Two sets of association rules, namely ``ally rules'' and ``enemy rules'', are extracted from the collected matches. Ally rules and enemy rules represent hero subsets that appear frequently in the same winning team or in the opposite team, respectively. At each turn, the strategy looks for the extracted association rules containing both the heroes picked already and the heroes not picked yet. Those not picked yet will be selectively added to a candidate pool, from which the recommended hero will be uniformly sampled. In our implementation, we adopt the best criteria claimed by the authors: association rules are mined with $0.01\%$ minimum support, and the metrics for selectively adding heroes to the candidate pool are ``win rate'' and ``confidence'' for ally rules and enemy rules, respectively. Readers can refer to the original paper~\cite{hanke2017reco} for more details on the approach. 
+\item \textbf{Highest Win Rate (HWR)}: each time, pick the hero not yet selected and with the highest win rate, based on frequency counts on our dataset. 
 \item \textbf{Random (RD)}: each time, uniformly sample a hero not yet selected. 
 \end{itemize}
 
-We do not implement the strategy based on sequence prediction models as proposed by Summerville et al.~\cite{summerville2017reco} because their model requires training on hero pick sequences, which are not readily available in our dataset. In fact, hero pick sequences are not currently downloadable from the official APIs provided the game and need to resort to third-party organizations. We would implement the strategy in the future should we have access to such data of hero pick sequences.
+We do not implement the strategy based on sequence prediction models as proposed by Summerville et al.~\cite{summerville2017reco} because their model requires training on hero pick sequences, which are not readily available in our dataset. In fact, hero pick sequences are not currently downloadable from the official APIs provided by the game and need to resort to third-party organizations. We would implement the strategy in the future should we have access to such data of hero pick sequences.
 
-Some additional implementation details are as follows. For each simulated draft, regardless of the strategy adopted, the first hero is sampled following the probability distribution reflecting how frequently each hero is picked in our dataset. This helps our experiments cover more possible scenarios. To ensure fairness when comparing pairs of strategies, among the 1000 simulations, each strategy is set to start first half of the time. A shared random seed is set for each 500-simulations, to make sure that randomness is the same for both strategies. All strategies follow the rule that no hero can be picked twice. All experiments are conducted on a PC with an Intel i7-3632QM 2.20GHz CPU.
+Some additional implementation details are as follows. For each simulated draft, regardless of the strategy adopted, the first hero is sampled following the probability distribution reflecting how frequently each hero is picked in our dataset. This helps our experiments cover more possible scenarios. To ensure fairness when comparing pairs of strategies, among the 1000 simulations, each strategy is set to start first for half of the simulations. A shared random seed is set for each 500-simulations, to make sure that randomness is the same for both strategies. All strategies follow the rule that no hero can be picked twice. All experiments are conducted on a PC with an Intel i7-3632QM 2.20GHz CPU.
 
 \subsection{Parameter Search for UCT}
 
@@ -285,6 +287,7 @@ The results are shown in Table~\ref{tab:param_set}. Tuning $c$ is not helpful wh
 
 
 \begin{table*}
+  \begin{adjustwidth}{-.6in}{-.5in}  
   \caption{Mean predicted win rate of row strategy  vs. column strategy. Simulations are based on the drafting rules of match mode ``All Ranked''. Numbers are from the view of the row strategy. The strategies are sorted in ascending order by their strengths, from top to bottom, and from left to right. Win rates symmetric to diagonal always sum to one, thus half of them are omitted.}
   \label{tab:mcts}
   \centering
@@ -301,7 +304,8 @@ The results are shown in Table~\ref{tab:param_set}. Tuning $c$ is not helpful wh
     $UCT_{800, 2^{-1}}$ & 0.928 & 0.878  & 0.776 &  0.591 & 0.593 & 0.524 & 0.5 &  \\
 $UCT_{1600, 2^{-1}}$ & 0.930 & 0.880  & 0.787 & 0.606 & 0.611 & 0.539 & 0.513 & 0.5 \\
   \bottomrule
-\end{tabular}
+  \end{tabular}
+  \end{adjustwidth}
 \end{table*}
 
 \begin{table*}
@@ -318,6 +322,7 @@ $UCT_{1600, 2^{-1}}$ & 0.930 & 0.880  & 0.787 & 0.606 & 0.611 & 0.539 & 0.513 & 
 \end{table*}
 
 \begin{table*}
+  \begin{adjustwidth}{-.7in}{-.5in}
   \caption{Mean predicted win rate of row strategy  vs. column strategy. Simulations are based on the drafting rules of match mode ``Captain Mode''. The table can be viewed in a similar way as Table~\ref{tab:mcts}.}
   \label{tab:mcts_captain_mode}
   \centering
@@ -334,7 +339,8 @@ $UCT_{1600, 2^{-1}}$ & 0.930 & 0.880  & 0.787 & 0.606 & 0.611 & 0.539 & 0.513 & 
     $UCT_{800, 2^{-1}}$ & 0.941 & 0.896 & 0.788 & 0.598 & 0.607 & 0.536 & 0.5 &  \\
 $UCT_{1600, 2^{-1}}$ & 0.942 & 0.903 & 0.797 & 0.620 & 0.627 & 0.552 & 0.519 &  0.5 \\
   \bottomrule
-\end{tabular}
+  \end{tabular}
+\end{adjustwidth}
 \end{table*}
 
 
@@ -345,7 +351,7 @@ We define the strength of a strategy as the number of strategies it can defeat w
 
 Among non-UCT strategies, the $HWR$ strategy that always picks the highest win rate hero achieves the best performance, which can defeat UCT with 200 iterations with a $51.6\%$ win rate. However, $HWR$ cannot prevail over UCT strategies that are allowed with more than 200 iterations. $AR$ adopted from~\cite{hanke2017reco} defeats $RD$ with $68.2\%$ win rate for our implementation, while the original authors reported a $76.4\%$ win rate against $RD$. The discrepancy may be due to different datasets being used to mine association rules and train the win rate predictor.
 
-To show the efficiency of different strategies, we report the average wall time (i.e. real elapsed time) needed per pick in Table~\ref{tab:mcts_time}. The time is recorded excluding the first pick, since it is based on weighted random sampling. UCT-based strategies takes 1.12 seconds or less per pick, which is a small fraction of the 25 second time limit per pick for human players in real matches~\cite{dotapickorder}. This demonstrates the feasibility of applying the UCT-based hero recommendation system online in large scale and real time.
+To show the efficiency of different strategies, we report the average wall time (i.e. real elapsed time) needed per pick in Table~\ref{tab:mcts_time}. The time is recorded excluding the first pick, since it is based on weighted random sampling. UCT-based strategies take 1.12 seconds or less per pick, which is a small fraction of the 25 second time limit per pick for human players in real matches~\cite{dotapickorder}. This demonstrates the feasibility of applying the UCT-based hero recommendation system online in large scale and real time.
 
 
 
@@ -357,9 +363,9 @@ To show the efficiency of different strategies, we report the average wall time 
 \end{figure*}
 
 \subsection{Extension to Other Match Modes}\label{sec:extension}
-What we have focused so far in this paper is based on the drafting rules of match mode \textit{All Ranked} in DOTA 2. However, our MCTS-based algorithm is not limited solely to this mode and can be adapted to other modes, whereby additional drafting rules and mechanics are deployed. In this section, we detail how our algorithm can be extended to another popular match mode called \textit{Captain Mode} to demonstrate our algorithm's generality. 
+What we have focused on so far in this paper is based on the drafting rules of match mode \textit{All Ranked} in DOTA 2. However, our MCTS-based algorithm is not limited solely to this mode and can be adapted to other modes, whereby additional drafting rules and mechanics are deployed. In this section, we detail how our algorithm can be extended to another popular match mode called \textit{Captain Mode} to demonstrate our algorithm's generality. 
 
-During the drafting process in Captain Mode matches, there is another type of actions, called \textit{hero banning}, that players can take besides hero pick. In the turns of banning, a team can designate certain heroes to be prohibited from selection by either team. The drafting order is represented in Figure~\ref{fig:pickorder_captain_mode}: two teams first alternate to ban three heroes, then alternate to pick two heroes, then alternate to ban two heroes, and so on. As the result, the drafting is 22 steps long, instead of just 10 as in the case of \textit{All Ranked}. The interleaving nature between bans and picks adds another level of complexity to the drafting, as players need to consider more possible strategies to prevent opponents from selecting their desired heroes. 
+During the drafting process in Captain Mode matches, there is another type of action, called \textit{hero banning}, that players can take besides hero pick. In the turns of banning, a team can designate certain heroes to be prohibited from selection by either team. The drafting order is represented in Figure~\ref{fig:pickorder_captain_mode}: two teams first alternate to ban three heroes, then alternate to pick two heroes, then alternate to ban two heroes, and so on. As the result, the drafting is 22 steps long, instead of just 10 as in the case of \textit{All Ranked}. The interleaving nature between bans and picks adds another level of complexity to the drafting, as players need to consider more possible strategies to prevent opponents from selecting their desired heroes. 
 
 Despite being more complex, the drafting in Captain Mode matches can be formulated as a combinatorial game similar to that in All Ranked matches but with a few minor adjustments:
 
@@ -396,4 +402,4 @@ In this paper, we treat the drafting process in MOBA games as a combinatorial ga
 
 One limitation of this work is that we do not consider player-specific information, such as player skills in their selected heroes, when recommending heroes. It is possible that a hero recommended by our algorithm, which is based solely on the current hero line-up, may be poorly played by a player who is not familiar with it. Our algorithm can be extended to integrate player skills, by augmenting the game state with player information and training a more advanced win rate predictor as the reward function which takes as input both hero picks and player-specific information. This limitation could be addressed when we have access to needed player-specific data.
 
-There are some other promising future directions that we can pursue next. First, were hero pick sequences from real match data available, we would integrate them as prior information to improve the tree policy and default policy in MCTS, thereby build search trees more effectively and efficiently~\cite{gelly2007combining,chaslot2009adding}. Second, we would also like to investigate how our recommendation systems can be customized to account for additional drafting rules and extended to other real-world scenarios such as player drafting in sports~\cite{staw1995sunk}. 
+There are some other promising future directions that we can pursue next. First, were hero pick sequences from real match data available, we would integrate them as prior information to improve the tree policy and default policy in MCTS, thereby improving capabilities to build search trees more effectively and efficiently~\cite{gelly2007combining,chaslot2009adding}. Second, we would also like to investigate how our recommendation systems can be customized to account for additional drafting rules and extended to other real-world scenarios such as player drafting in sports~\cite{staw1995sunk}. 
