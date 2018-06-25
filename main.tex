@@ -44,9 +44,9 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{mathpazo} % Use the Palatino font by default
 
 \usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
-\addbibresource{example,bib_game,bib_tech,bib_mcts,bib_moba,bib_mywork,bib_rl,bib_eomm} % The filename of the bibliography
+\addbibresource{example,bib_game,bib_tech,bib_mcts,bib_moba,bib_mywork,bib_rl,bib_eomm,bib_dda,bib_churn} % The filename of the bibliography
 % \bibliographystyle{apalike}
-% \bibliography{bib_tech,bib_game}
+
 
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 
@@ -168,7 +168,7 @@ headsepline, % Uncomment to get a line under the header
 % I don't want to say my thesis is just adaptation techniques. Adaptation techniques
 
 % original: Pre-Match Recommendations for Influencing Match Outcomes and Player Engagement in Video Games
-\thesistitle{Recommendation Systems for Influencing Match Outcomes in the Pre-Match Phase of Match-Based Video Games} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
+\thesistitle{Recommendation Systems for Influencing Game Outcomes and Player Engagement in Pre-Match of Match-Based Games} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
 \supervisor{Magy Seif El-Nasr (Advisor)} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 \supervisorone{Christopher Amato}
 \supervisortwo{Seth Cooper}
@@ -286,21 +286,23 @@ headsepline, % Uncomment to get a line under the header
 \begin{abstract}
 \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
 
-For years, video games have garnered the attention of people worldwide, providing a unique environment for entertainment, aesthetic appreciation, story adventure, knowledge acquirement, competition and socialization. The success of video games to attract players would not be possible without their rich in-game elements, such as weapons, maps, levels, and characters either played by human players or computer programs. These in-game elements influence how players interact with a game, and consequently the outcome of the game (e.g., win, loss, level-up, and milestones unlocks). There has been an extensive body of theories and empirical studies suggesting that game outcomes have a close relationship with player engagement. Therefore, to keep players engaged, in-game elements need to be carefully crafted and presented to players. 
+For years, video games have garnered the attention of people worldwide, providing a unique environment for entertainment, aesthetic appreciation, story adventure, knowledge acquirement, competition and socialization. There has been an extensive body of theories and empirical studies suggesting that game outcomes have a close relationship with player engagement. One plausible approach to influence game outcomes and player engagement is through dedicatedly crafting and presenting in-game elements to players. In-game elements, such as weapons, maps, levels, and characters, influence how players interact with a game and could directly modulate the outcome of a game (e.g., win, loss, level-up, and milestones unlocks) and player engagement. 
 
 % Such variety and richness     match outcomes are believed to be closely related to player engagement and revenues made by game companies. Based on individual players' information and game contexts, personalized recommendation is one family of proposed methods, wherein dynamic game contents are recommended to players in order to influence their win rates. 
 
-In this thesis I propose to use artificial intelligence (AI) techniques in order to recommend players in-game elements for influencing game outcomes. While there are numerous scenarios where in-game element recommendations are applicable, my thesis is delimited by the following boundaries: (1) the goals of influencing game outcomes are to increase a player's win rate and engagement; (2) the specific types of in-game elements for recommendations are starting items, characters and opponents; (3) the context of applying the recommendations is within the pre-match stage, when in-game elements determined before a match starts could already have an impact on the final match outcome and player engagement.
+In this thesis I propose to use recommendation system techniques in order to recommend players in-game elements for influencing game outcomes and engagement. While there are numerous scenarios where in-game element recommendations are applicable, my thesis is delimited by the following boundaries: (1) the specific types of in-game elements for recommendations are starting items, characters and opponents; (2) the context of applying the recommendations is within the pre-match stage of match-based video games, when in-game elements determined before a match starts could already have an impact on the final match outcome. Within these boundaries, I propose three recommendation systems with each coping with different goals and challenges.
 
 % As there can be various goals for influencing game outcomes and video games sport different designs and in-game elements, I am not able to examine every place where in-game element recommendation can be applied. Rather, I focus on the following boundaries delimiting my research.
 
-Within these boundaries, I propose three recommendation systems with each coping with different goals and challenges:
 
-First, I propose a deck recommendation system, \textit{Q-DeckRec}, for recommending winning-effective decks in one-vs-one Collectible Card Games (CCG). A deck is a set of cards seen as the starting items in CCG. Q-DeckRec deals with the challenge of how to quickly identify a winning-effective deck from a large number of possible choices using minimal computational resources; thus Q-DeckRec is designed to be suitable for large-scale or real-time recommendation application.
 
-Second, I propose a character recommendation system, \textit{DraftArt}, for recommending winning-effective characters in Multi-player Online Battle Arena (MOBA) games. Matches in MOBA games are team-based. In the pre-match stage, each player needs to select a character with unique abilities which should synergize the teammates' and counter the opponents' in the match. As the character selection is progressive, the challenge that DraftArt deals with is to predict which characters will be selected by others, which embraces a large number of possibilities, and efficiently identify winning-effective characters which will fit the ultimate character line-up.
+First, I propose a deck recommendation system named \textit{Q-DeckRec} for recommending winning-effective decks, a set of cards seen as the starting items, in one-vs-one Collectible Card Games (CCG). Q-DeckRec deals with the challenge of how to quickly identify a winning-effective deck from a large number of possible choices using minimal computational resources; thus Q-DeckRec is designed to be suitable for large-scale or real-time recommendation application.
 
-Third, I propose an opponent recommendation system, a matchmaking framework named \textit{EOMM}, in which expected match outcomes within recommended opponents optimize all involved players' engagement. While the aforementioned starting item and character recommendation systems aim for  increasing the win rate of one player, which can be seen as an intermediate step to improve player engagement, EOMM directly operates on the optimization of population-wise player engagement through opponent recommendation (matchmaking).
+Second, I propose a character recommendation system, \textit{DraftArtist}, for recommending winning-effective characters in Multi-player Online Battle Arena (MOBA) games. Matches in MOBA games are team-based and each player needs to select, in a specific order, a character  with unique abilities which should synergize the teammates' and counter the opponents'. The challenge that DraftArtist deals with is efficient planning on which characters other players will select and identify winning-effective characters for adapting to the ultimate character line-up, which could embrace a large number of possibilities and uncertainty in such a team-based competitive setting.
+
+Third, I propose an opponent recommendation framework named\linebreak \textit{Engagement-Optimized Matchmaking} (EOMM), in which expected match outcomes within recommended opponents optimize all involved players' engagement. EOMM presents a new way of thinking opponent recommendation as an optimization problem which can be solved through a graph matching algorithm. 
+
+The connections between the three proposed recommendation systems are as follows. All the systems use recommendations as a means to influence game outcomes. They can be indirectly or directly used to improve player engagement. The starting item and character recommendation systems aim for increasing the win rate for one player, which can be seen as an indirect step to improve player engagement because they need to work with other systems which decide when to deliver recommendations, while EOMM directly operates on the optimization of population-wise player engagement as the criterion for influencing game outcomes for multiple players.
 
 % In each match, human players (and possibly computer agents) compete with each other.
 % First, I focus on recommendations in the pre-match stage in video games played based on small sessions called matches. In the pre-match stage, some in-game elements determined before the match starts could already have an impact on the final match outcome and player engagement.
@@ -320,7 +322,7 @@ I would like to thank my advisor Prof. Magy Seif El-Nasr for her patience, motiv
 
 My sincere thanks also go to my thesis committee members: Prof. Christopher Amato, Prof. Yizhou Sun, and Prof. Seth Cooper. They provided me with enormous helps and inspired my research in diverse perspectives. 
 
-I am grateful to all collaborators I worked with during my research as well as colleagues I met during my internships at Electronic Arts, eBay, Google, and Facebook. My special gratefulness goes to Prof. Truong-Huy Nguyen for suggesting me PhD and life advice, and Dr. Su Xue and Dr. John Kolen for supervising my incredible internship experience at Electronic Arts.
+I am grateful to all collaborators I worked with during my research as well as colleagues I met during my internships at Electronic Arts, eBay, Google, and Facebook. My special gratefulness goes to Prof. Truong-Huy Nguyen for suggesting me PhD and life advice, and Dr. Su Xue and Dr. John Kolen for fostering my incredible internship experience at Electronic Arts.
 
 I thank Prof. Karl Lieberherr and Prof. Stephen Intille for their kind helps in the first year of my PhD. I also thank all my friends and lab mates for their support, understanding, and encouragement.
 
