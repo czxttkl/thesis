@@ -336,4 +336,6 @@ For the MC-simulation method, we first report Mean Squared Error (MSE) and $R^2$
 
 
 \section{Summary}\label{sec:conclusion}
-In this section, we propose a deck recommendation system named \textit{Q-DeckRec}, which is able to solve deck building problem instances in large-scale and real-time after a period of training and requires minimal domain knowledge. We design experiments which demonstrate the advantages.
+In this section, we propose a deck recommendation system named \textit{Q-DeckRec}, which is able to solve deck building problem instances in large-scale and real-time after a period of training and requires minimal domain knowledge. We design experiments which demonstrate the advantages. 
+
+Although we study the deck recommendation problem particularly in CCG, we expect our method could suitably extend to efficient starting item recommendations for other genres of games where: (1) the choice space of starting items is large; (2) the winning-effectiveness of starting items can be evaluated through some form of evaluation (e.g., simulations as in our study) in the training phase; (3) heuristic searches do not yield good results or require domain knowledge heavy to build, and intermediate solution evaluation needed by metaheuristic searches would take up computational resources more expensive than they could afford for large-scale or real-time application.
