@@ -5,7 +5,7 @@
 
 \section{Introduction}\label{sec:introduction}
 
-In this chapter, we investigate recommendation system techniques for answering \hyperref[rq1]{\textbf{R.Q.~1}}, which is reiterated here:
+In this chapter, we investigate recommendation system techniques for answering \hyperref[rq1]{\textbf{R.Q.~1}} in the \textbf{one-vs-one} setting, which is reiterated here:
 
 \begin{equation}
   \tag{R.Q. 1}\label{chapter3_rq1}
@@ -21,7 +21,7 @@ As we state when introducing \hyperref[rq1]{\textbf{R.Q.~1}} in Chapter~\ref{cha
 One-vs-one CCGs are match-based card games, where two players wield cards with various in-game effects to attack opponents and defend themselves. In a match, a player's cards are drawn from his or her own \textit{deck} seen as starting items in CCGs - a deck is a collection of cards prepared before the match starts which represents specific play strategies the player wants to realize. CCGs are often designed with an abundant number of cards (a few hundreds to thousands) but the size limit of a deck is usually much smaller (a few dozens). Supposing the number of total cards and deck size are $N$ and $D$ respectively, there could be as many as ${N\choose D}=N!/D!/(N-D)!=O(N^D)$ ways to assemble decks. Besides, due to sophisticated synergistic and oppositional relationships among cards, there is no single deck which can universally win against all other decks. Mixing all these factors poses a challenging task for players to identify winning-effective decks matching their own play styles and countering specific opponents.
 
 
-In this chapter, we study a recommendation system which is able to efficiently identify winning-effective decks for players in such a setting of one-vs-one CCGs. The chapter is structured as follows. We first introduce the formal problem formulation and then analyze how existing methods are inefficient to solve the problem. Next, we illustrate in details our proposed algorithm. Finally, we show experiments and results to compare our method with others.
+In this chapter, we study a recommendation system, named \textit{Q-DeckRec}, which is able to efficiently identify winning-effective decks for players in such a setting of one-vs-one CCGs. The chapter is structured as follows. We first introduce the formal problem formulation and then analyze how existing methods are inefficient to solve the problem. Next, we illustrate in details our proposed algorithm. Finally, we show experiments and results to compare our method with others.
 
  
  \section{Problem Formulation}\label{sec:qdeckrec_probform}
