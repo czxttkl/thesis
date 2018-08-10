@@ -3,21 +3,44 @@
 \label{chapter:eomm} 
 
 \section{Introduction}
-Player-versus-Player (PvP) is a mode of video game in which multiple players directly engage in competition or combat. PvP games, which cover many popular genres, such as multiplayer online battle arena (MOBA), first-person shooting (FPS), and e-Sports, have increased worldwide popularity in recent years. For example, \textit{League of Legends}, one of the most played MOBA games, has 90 million summoner names registered, 27 million unique daily players and 7.5 million concurrent users~\cite{fanbase,27million}. As data released by~\cite{superdata} shows, e-Sports is estimated to have 188 million viewership and 748 million dollar worth market in 2015 and the numbers are expected to grow continuously.
+This chapter aims to answer \hyperref[rq2]{\textbf{R.Q.~2}}, which we reiterate here:
 
-Matchmaking is the process that connects players to form PvP matches. In practice, a matchmaking system takes practical limitations, such as players' geo-location and network latency, into consideration. For example, cross-ocean pairing is not good for player experience. Beyond technical constraints, the strategy various matchmaking systems employ is \emph{creating fair games}. This strategy relies on the assumption that matching closely skilled players tend to create competitive games which are desired by players~\cite{graepel2006ranking}. In order to establish player skills, numerous models have been studied, such as Elo~\cite{elo1978rating}, Glicko~\cite{glickman1999parameter} and TrueSkill~\cite{herbrich:trueskill}.
+\begin{equation}
+  \tag{R.Q. 2}\label{rq2}
+  \parbox{\dimexpr\linewidth-4em}{%
+    \strut
+    How can we design systems which recommend in-game elements for improving player engagement through data-driven approaches, in the pre-match stage in match-based video games?
+    \strut
+  }
+\end{equation}
 
-Are fairly matched games always beneficial for player experience? This fundamental, yet intuitive, assumption is worthy of deep investigation. We can challenge it with a few examples. Consider a cautious player who cares about protecting his rank among friends, and a risk taker who enjoys difficult matches. Pairing them with the similarly skilled opponents will affect these players very differently. Even for the same player, their expectation on the coming match when they just lost three games in a row can be very different from that when they recently performed well. In Table~\ref{tab:churnrate}, we show an example that churn risks vary drastically upon players' recent match outcomes in a popular PvP game made by EA. These facts lead to two key insights: (1) the effectiveness of matchmaking needs to be measured quantitatively; and (2) matchmaking should depend on dynamic and individual \emph{player states}.
+Techniques that we studied in the previous two chapters for answering \hyperref[rq1]{\textbf{R.Q.~1}} can be seen as \textit{indirect} ways to influence player engagement. While they are able to predict how in-game dynamics such as winning chances would be affected by recommended in-game elements, they are not capable of predicting exactly how player engagement will change. Rather, we rely on theoretical foundations such as Self-Determination Theory and Flow to assume that winning-effective in-game elements could help certain players regain competence and improve player engagement consequently. 
 
-In this paper, we propose a new matchmaking framework, Engagement Optimized Matchmaking (EOMM). By formulating matchmaking into an optimization problem, we pair players in order to maximize the overall player engagement, or equivalently, minimize the overall player disengagement.  First, we measure a player's disengagement by their churn risk after each matchmaking decision. Here \emph{churn} refers to no gameplay within a period of time, such as a week. Second, we model all players who wait in the matchmaking pool as a complete graph, where each player is a node, and an edge between two players is their sum churn risks if paired. The churn risk depends on individual player states at the moment of matchmaking. Last, we can achieve engagement optimized matchmaking efficiently by solving a \emph{minimum weight perfect matching} (MWPM) problem that finds non-overlapping pairs with the minimal sum of edge weights on a complete graph.
+\hyperref[rq2]{\textbf{R.Q.~2}} takes one step further by investigating \textit{direct} ways to influence player engagement using in-game element recommendations. This means such systems should be able to achieve three things: (1) predict the change of in-game dynamics a recommendation would bring; (2) predict the change of player engagement resulting from change of in-game dynamics, where player engagement needs to be measured and modeled quantitatively using a data-driven approach; (3) efficiently search for the most proper in-game element to recommend for the optimal player engagement. 
+
+
+
+% Player-versus-Player (PvP) is a mode of video game in which multiple players directly engage in competition or combat. PvP games, which cover many popular genres, such as multiplayer online battle arena (MOBA), first-person shooting (FPS), and e-Sports, have increased worldwide popularity in recent years. For example, \textit{League of Legends}, one of the most played MOBA games, has 90 million summoner names registered, 27 million unique daily players and 7.5 million concurrent users~\cite{fanbase,27million}. As data released by~\cite{superdata} shows, e-Sports is estimated to have 188 million viewership and 748 million dollar worth market in 2015 and the numbers are expected to grow continuously.
+
+To answer \hyperref[rq2]{\textbf{R.Q.~2}}, we study opponent recommendation, a special case where players themselves are the subject of recommendation and the goal is to connect players to form Player-vs-Player (PvP) matches. We consider games with PvP matches a subset of what we generally refer to as match-based games in this dissertation. Back in Chapter~\ref{chapter:intro}, we allow participants to be either human players or AI bots in match-based games unless those as the recipients of our recommendations should be human players. However, PvP games contain only human players, and in the  problem we study here, every player is the recipient as well the subject of recommendation. Opponent recommendation is also known as ``matchmaking''~\cite{medler2011using}. Since the term matchmaking has been used more frequently in existing literature, we will keep use matchmaking and opponent recommendation interchangeably in the rest of this chapter. 
+
+Our definition of opponent recommendation (or matchmaking) does not restrict how many players to recommend for each player and how many players each player can be recommended to. However, most existing works have only examined the case where players are exactly divided into matches. Thus, the size for each match determines the number of recommended players the player will receive, as well as the number of other players the player will be recommended to. For example, matchmaking applied in a one-vs-one PvP game will pair each player to exactly one other player. However, this does not mean the player is completely unable to choose the recommended players; we observe many modern games allow players to quit a matchmaked line-up before the match officially starts, though some form of penalty may incur if the quitting behavior is malicious. In this chapter, we also follow the previous convention to study matchmaking where players are exactly divided and matched.
+
+
+
+In practice, a matchmaking system takes practical limitations, such as players' geo-location and network latency, into consideration. For example, cross-ocean pairing is not good for player experience. Beyond technical constraints, the strategy a fair amount of matchmaking systems employ is \emph{creating fair games}. This strategy relies on the assumption from Flow theory~\cite{flow1990psychology}, which we have used as one of the theoretical foundations for our dissertation, that matching closely skilled players tend to create competitive games which are appropriately challenged for their skills. In order to establish player skills, numerous models have been studied, such as Elo~\cite{elo1978rating}, Glicko~\cite{glickman1999parameter} and TrueSkill~\cite{herbrich:trueskill}.
+
+However, \textit{always} creating fairly matched games is only based on hypothetical assumptions and is worthy of deep investigation. We can challenge it with a few examples. Consider a cautious player who cares about protecting his rank among friends, and a risk taker who enjoys difficult matches. Pairing them with the similarly skilled opponents will affect these players very differently. Even for the same player, their expectation on the coming match when they just lost three games in a row can be very different from that when they recently performed well. In Table~\ref{tab:churnrate}, we show an example that churn risks vary drastically upon players' recent match outcomes in a popular PvP game made by Electronic Arts, Inc. These facts lead to two key insights: (1) the effectiveness of matchmaking needs to be measured quantitatively; and (2) matchmaking should depend on dynamic and individual \emph{player states}.
+
+In this chapter, we propose a new matchmaking framework, Engagement Optimized Matchmaking (EOMM). By formulating matchmaking into an optimization problem, we pair players in order to maximize the overall player engagement, or equivalently, minimize the overall player disengagement.  First, we measure a player's disengagement by their churn risk after each matchmaking decision. Here \emph{churn} refers to no gameplay within a period of time, such as a week. Second, we model all players who wait in the matchmaking pool as a complete graph, where each player is a node, and an edge between two players is their sum churn risks if paired. The churn risk depends on individual player states at the moment of matchmaking. Last, we can achieve engagement optimized matchmaking efficiently by solving a \emph{minimum weight perfect matching} (MWPM) problem that finds non-overlapping pairs with the minimal sum of edge weights on a complete graph.
 
 EOMM provides a solid theoretical framework for matchmaking analysis. With it, we prove that equal-skill based matchmaking is a special case of EOMM on a simplified and often inapplicable assumption about player states. The generic EOMM instead proves to be optimal across a wide range of  contexts.
 
 For system development, EOMM is both flexible and computationally feasible. The optimization objective can be tuned for various interests, e.g., in-game time, or even spending. Furthermore, EOMM consists of three components: a skill model, a churn prediction model and a graph matching model. All can be efficiently implemented and independently upgraded. We built a simulated system based on real data of a popular game made by Electronic Arts,\! Inc.\! (EA), showing significant improvement in enhancing player engagement by EOMM against equal-skill based and other matchmaking methods.
 
-In sum, this paper contains the following contributions. First, we propose an engagement optimized matchmaking framework, i.e., EOMM, which solves matchmaking as an optimization problem of maximizing the overall player engagement. Second, we provide theoretical analysis about the optimality of EOMM and the conditions of the applicability of existing matchmaking methods. Last, we build a simulated system using real game data to show significant advantages of EOMM in retaining players over the existing matchmaking methods.
+% In sum, this paper contains the following contributions. First, we propose an engagement optimized matchmaking framework, i.e., EOMM, which solves matchmaking as an optimization problem of maximizing the overall player engagement. Second, we provide theoretical analysis about the optimality of EOMM and the conditions of the applicability of existing matchmaking methods. Last, we build a simulated system using real game data to show significant advantages of EOMM in retaining players over the existing matchmaking methods.
 
-The rest of this paper is organized as follows. After reviewing the related work, we will present the formulation of matchmaking as an optimization problem on a graph. Then we describe theoretical findings comparing EOMM and other matchmaking methods. We then show the case study applying EOMM on real data. Finally, we will conclude with a discussion of the results and future directions.
+The rest of this chapter is organized as follows. After reviewing the related work, we will present the formulation of matchmaking as an optimization problem on a graph. Then we describe theoretical findings comparing EOMM and other matchmaking methods. We then show the case study applying EOMM on real data. Finally, we will conclude with a discussion of the results and future directions.
 
 
 \begin{table}[tb]
@@ -41,7 +64,7 @@ LLL & 5.1\% \\
 \end{table}
 
 
-\section{PREVIOUS WORK}\label{sec:review}
+\section{Related Work}\label{sec:review}
 \subsection{Skill Modeling}
 The motivation behind skill rating is to rank players and to enable skill-based matchmaking. Dating back to 1952, the \textit{Bradley-Terry model} \cite{bradley1952rank} was developed to deal with repeated pairwise comparisons among a group of subjects. In the Bradley-Terry model, a player $i$ is assumed to have a fixed, positive skill scalar, $r_i$, and the winning probability of player $i$ against player $j$ is the ratio of player $i$'s skill in the sum of skills of both players. In its original form, the Bradley-Terry model estimates player skills only after observing all pairwise comparisons. While feasible for small groups of players, requiring $O(n^2)$ matches is prohibitive for large player pools. One can show that the Bradley-Terry model is equivalent to a logistic regression model \cite{agresti2011categorical} in which each coefficient $w_i$ corresponds to $\log(r_i)$.
 
@@ -49,49 +72,23 @@ The \textit{Elo system} \cite{elo1978rating} addresses the relative skill rating
 
 The \textit{Glicko system} \cite{glickman1999parameter}, a Bayesian ranking rating system, was later introduced. Besides mean player skill, $r_i$, it also models the belief about a player's skill as $RD_i$ (rating deviation). As they play an increasingly number of games, the belief about their skills become stronger hence $RD_i$ decreases. However, $RD_i$ increases when a player ceases to play for long time. To achieve high efficiency, Glicko uses an approximation Bayesian algorithm to update $r_i$ and $RD_i$.
 
-Neither the Bradley-Terry model, the Elo system or the Glicko system was initially applicable to team-oriented games until works such as \cite{herbrich:trueskill,huang2004generalized,menke2008bradley} to generalize these models. For example, \textit{TrueSkill system} \cite{herbrich:trueskill} extends the Elo system to games with flexible numbers of players and teams.
+Neither the Bradley-Terry model, the Elo system or the Glicko system was initially applicable to team-oriented games until works such as~\cite{herbrich:trueskill,huang2004generalized,menke2008bradley} to generalize these models. For example, \textit{TrueSkill system}~\cite{herbrich:trueskill} extends the Elo system to games with flexible numbers of players and teams.
 
-Researchers have proposed more advanced skill models to capture player skills in multiple facets. The works in \cite{chen2016modeling,stanescu2011rating} model player skills in multi-dimensions such as offensive and defensive abilities. Delalleau et al.  \cite{Delalleau2012} proposed a neural network based skill model which learns latent skill embeddings of players and is claimed to outperform TrueSkill in a team based game. There are skill models proposed for specific game genres, such as \cite{di2009skill} for chess, \cite{zhengxing2016player,suznjevic2015application} for MOBA games and for \cite{avontuur2013player} RTS games.
+Researchers have proposed more advanced skill models to capture player skills in multiple facets. The works in~\cite{chen2016modeling,stanescu2011rating} model player skills in multi-dimensions such as offensive and defensive abilities. \cite{Delalleau2012} proposed a neural network based skill model which learns latent skill embeddings of players and is claimed to outperform TrueSkill in a team based game. There are skill models proposed for specific game genres, such as~\cite{di2009skill} for chess, \cite{zhengxing2016player,suznjevic2015application} for MOBA games and for~\cite{avontuur2013player} RTS games.
 
-In our paper, we will compare EOMM with skill based matchmaking methods which leverage skill models. Skill models can also facilitate EOMM in the decision of player assignment.
-
-\subsection{Matchmaking Strategies}
-There has been much research ensuring physical criteria of matchmaking services such as network connection quality \cite{agarwal2009matchmaking,lee2008measurement,manweiler2011switchboard}. Besides physical criteria, matchmaking can be seen as a player modeling technique \cite{Yannakakis2013} that extracts player information and delivers adaptive gaming experience \cite{chen2015analytics}. A fair amount of matchmaking systems assume that skill balanced games are good for engagement \cite{graepel2006ranking} and hence resort to skill rating algorithms to identifying similarly skilled opponents. My\'{s}lak and Deja \cite{myslak2014developing} suggests additional information about player preferences in in-game avatar roles can further improve fairness-based matchmaking systems. A few researchers have explored methods to improve player engagement through matchmaking. Delalleau et al. \cite{Delalleau2012} proposed to train a neural network based architecture which predicts player enjoyment based on their historical statistics. They measured enjoyment by directly asking players for feedback after each match. Whether or not this method can effectively collect sufficient feedbacks has not been demonstrated with real data. Jim{\'e}nez-Rodr{\i}guez et al. \cite{jimenez2011matchmaking} proposed that matchmaking could be based on preferred roles by players. They argue that a fun match should have players act in  roles with perceivably joyful role distribution. However, it is still a conceptual, heuristic-based method without experiment showing that such matchmaking system indeed improves concrete engagement metrics. To our best knowledge, we have not seen any existing matchmaking method that formally treats matchmaking as an optimization problem to maximize player engagement.
-
-% \subsection{Player Engagement Prediction}
-
+We will compare EOMM with skill based matchmaking methods which leverage skill models. Skill models can also facilitate EOMM in the decision of player assignment.
 
 \subsection{Graph Matching}
 In a graph $\mathcal{G}=(V, E)$, a \textit{matching} is a set of pairwise non-adjacent edges \cite{west2001introduction}; that is, no two edges share a common vertex. A \textit{perfect matching} is a matching with every vertex in $G$ incident on exactly one edge in the matching.  In a weighted graph $G$, a \textit{minimum weight matching } (MWM) is the matching with the lowest sum of edge weights. A \textit{minimum weight perfect matching} (MWPM) is the perfect matching with the lowest sum of edge weights.
 
 As will be shown in Section~\ref{sec:optimization}, the EOMM framework converts the problem of determining optimal match assignment to the problem of seeking MWPM on a weighted graph. MWM/MWPM have broad applications in other fields, including creating pairs following specific rules in chess tournaments \cite{olafsson1990weighted}, schdeduling training sessions among NASA shuttle cockpit simulators \cite{bell1994weighted} and transmitting images over networks \cite{riskin1994index}. In a similar spirit, \'{O}lafsson \cite{olafsson1990weighted} leverages MWPM algorithm to determine opponents. Their goal, however, was to create matches maximally adhering specific rules of chess tournament, which is different than ours to optimize for player engagement.
 
-The first attempt to solve MWPM is the polynomial time \textit{blossom} algorithm proposed by Edmond \cite{edmonds1965maximum,edmonds1965paths} in 1965. Since then, researchers have steadily improved upon this algorithm. We will compare and discuss those improved methods later when we introduce EOMM.
+The first attempt to solve MWPM is the polynomial time \textit{blossom} algorithm proposed by Edmond \cite{edmonds1965maximum,edmonds1965paths}. Since then, researchers have steadily improved upon this algorithm. We will compare and discuss those improved methods later when we introduce EOMM.
 
-%A summary of MWPM solution complexity in general graph is shown in Table 2.
-%
-%\begin{table}[]
-%\centering
-%\caption{Complexity of MWPM algorithms. $n=|V|, m=|E|$}
-%\begin{tabular}{ll}
-%\hline
-%Algorithm & Complexity                      \\ \hline
-%\cite{edmonds1965maximum,edmonds1965paths}         & $O(n^2 m)$         \\
-%\begin{tabular}[x]{@{}c@{}}\cite{gabow1974implementation}\\ \cite{lawler2001combinatorial} \end{tabular}          & $O(n^3)$             \\
-%\cite{karzanov1976efficient}         & $O(n^3 + m\log n)$      \\
-%\cite{gabow1990data}         & $O(n(m+n\log n)$              \\
-%\cite{gabow1985scaling}\tablefootnote{ Integer edge weights only. $K$ is the largest magnitude of an edge weight. } & $O(mn^{3/4}\log K)$  \\
-%
-%\cite{drake2003simple}\tablefootnote{Greedy algorithm with 1/2 performance ratio. } & $O(m)$  \\
-%\cite{duan2014linear}\tablefootnote{Greedy algorithm with $(1-\epsilon)$ performance ratio.} & $O(m\epsilon^{-1}\log \epsilon^{-1})$
-%\end{tabular}
-%\end{table}
+\subsection{Player Engagement Prediction}
+Another important building component of EOMM is churn prediction, which belongs to the family of data-driven approaches for studying player engagement. Readers can refer to Section~\ref{sec:rw_data_player_engage} for literature overview.
 
-
-
-
-
-\section{ENGAGEMENT OPTIMIZED \\ MATCHMAKING}\label{sec:optimization}
+\section{Engagement Optimized Matchmaking}\label{sec:optimization}
 In this section, we will introduce the EOMM framework which formulates matchmaking as an optimization problem. In contrast with the existing matchmaking methods that heuristically pair similarly skilled co-players, EOMM aims to match players in an optimal way that maximizes overall player engagement. Here we will describe the details of match assignment for 1-vs-1 games. We will discuss how EOMM can be extended to the matches with more players in the final section.
 
 \subsection{Optimization Objective}
@@ -107,7 +104,7 @@ We construct a graph, $\mathcal{G}$, to model this environment (see Figure~\ref{
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=0.48\textwidth]{Figures/complete_matching.pdf}
+\includegraphics[width=1\textwidth]{Figures/complete_matching.pdf}
 \caption{Model matchmaking on a complete graph. Each node represents a player, and every edge is associated with the sum engagement metric of two players if paired. EOMM amounts to finding an optimal pair assignment on $\mathcal{G}$.}
 \label{fig:matching}
 \end{figure}
@@ -157,7 +154,7 @@ For a graph with $N$ node, the brute-force way is to exhaustedly compare all $\b
 
 \vspace{3mm}
 
-\section{THEORETICAL FINDINGS}\label{sec:findings}
+\section{Theoretical Findings}\label{sec:findings}
 Besides generating optimal matchmaking assignments, EOMM provides a framework to conduct theoretical analysis on other matchmaking related problems. We use this framework to compare EOMM with other matchmaking strategies under different hypothetical situations to obtain many insights. Without loss of generality, we focus our discussion on 1-vs-1 games with possible game outcomes sampled from \emph{Win}, \emph{Lose} and \emph{Draw}.
 
 Using the same notation in Section~\ref{sec:optimization}, we investigate a pair of players $p_i, p_j \in \mathcal{P}, i \neq j$. When $c(\vect{s}_i, \vect{s}_j) = c(o_{i,j})$, i.e., a player's churn risk only depends on the game outcome of the upcoming match, regardless of all other states. This simplification for Eqn.~\ref{eqn:stateUpdate}, where $\vect{s}_i^{update}$ only considers $o_{i,j}$ but ignores $\vect{s}_i$, has  interesting implications.
@@ -170,7 +167,7 @@ When $c(\vect{s}_i, \vect{s}_j) = c(\vect{s}_i)$, i.e., a player's churn risk is
 
 The analysis above shows that the existing matchmaking methods, such as equal-skill based and random matching, arise within the EOMM framework on different conditions. Practitioners can safely apply EOMM while gathering more information about their game and players.
 
-\section{CASE STUDY}\label{sec:casestudy}
+\section{Case Study}\label{sec:casestudy}
 To test the proposed matchmaking framework, we ran simulation which is configured  based on the real data from a popular PvP game made by Electronic Arts Inc.\! (EA). In the simulation, we compared different matchmaking methods applied to the same player population. In the end, EOMM retained significantly higher number of players than other matchmaking methods.
 
 \subsection{Data Collection}
@@ -324,10 +321,10 @@ EOMM     & 51.90   & 104.24   & 157.50    & 209.37  &  261.19  \\ \hline
 
 
 
-\section{CONCLUSION}
-The paper presents a novel framework to achieve engagement optimized matchmaking (EOMM). It formulates matchmaking as a problem of maximizing the player engagement, and solves the optimization efficiently. EOMM employs three components, a skill model, an engagement predictive model and a minimum weight perfect matching algorithm, each of which can be tailored flexibly for specific applications. We ran simulations whose configurations were based on real data from an online PvP game. The results show that EOMM significantly outperforms all other methods in the number of retained players. EOMM also provides a theoretical framework to analyze various matchmaking algorithms.
+\section{Summary}
+This chapter attempts to answer \hyperref[rq2]{\textbf{R.Q.~2}} by presenting a novel framework, Engagement Optimized Matchmaking (EOMM), to achieve optimized engagement for a population of online players through recommendation of opponents. It formulates matchmaking as a problem of maximizing the player engagement, and solves the optimization efficiently. EOMM employs three components, a skill model, an engagement predictive model and a minimum weight perfect matching algorithm, each of which can be tailored flexibly for specific applications. We ran simulations whose configurations were based on real data from an online PvP game. The results show that EOMM significantly outperforms all other methods in the number of retained players. EOMM also provides a theoretical framework to analyze various matchmaking algorithms.
 
-EOMM provides a measurable and flexible matchmaking framework. It has well-defined quantitative objectives that can be monitored, evaluated and improved. Within the EOMM framework, the core building components, skill model, churn model and graph pairing model, are uncoupled so that they can be tuned and replaced independently. Moreover, we can even change the objective function to other core game metrics of interest, such as play time, retention, or spending. EOMM allows one to easily plug in different types of predictive models to achieve the optimization.
+EOMM provides a measurable and flexible matchmaking framework. It has well-defined quantitative objectives that can be monitored, evaluated and improved. Within the EOMM framework, the core building components, skill model, churn model and graph pairing model, are uncoupled so that they can be tuned and replaced independently. Moreover, we can even change the objective function to other data-driven metrics of player engagement, such as play time, retention, or spending. EOMM allows one to easily plug in different types of predictive models to achieve the optimization.
 
 % So far we have discussed EOMM in 1-vs-1 game scenarios. This framework also applies to PvP games that involve teams of players, where every component needs to be extended with additional care. The skill model can be simply applied to a team by adding up skills for all team members~\cite{herbrich:trueskill}. For churn prediction, we can use the same idea that one player's churn risk is conditionally independent with other players' states given that their influence on the player's own state, such as the game outcome, is known. Last, the minimum weight perfect matching algorithms for pairs are no longer applicable. Instead of a pair assignment, we seek a \emph{grouping assignment} on a complete graph. A related area to investigate is perfect matching in hypergraphs~\cite{berge1984hypergraphs}, where an edge can connect more than two vertices. Furthermore, EOMM is not even limited to games. In broad applications, such as friend connection in a social network and 1-on-1 tutoring in online education, EOMM's formulation and optimization techniques still apply.
 
