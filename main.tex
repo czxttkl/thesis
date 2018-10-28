@@ -44,7 +44,7 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{mathpazo} % Use the Palatino font by default
 
 \usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
-\addbibresource{example,bib_game,bib_tech,bib_mcts,bib_moba,bib_mywork,bib_rl,bib_eomm,bib_dda,bib_churn,bib_recom} % The filename of the bibliography
+\addbibresource{bibs/example,bibs/bib_game,bibs/bib_tech,bibs/bib_mcts,bibs/bib_moba,bibs/bib_mywork,bibs/bib_rl,bibs/bib_eomm,bibs/bib_dda,bibs/bib_churn,bibs/bib_recom,bibs/bib_ethical} % The filename of the bibliography
 % \bibliographystyle{apalike}
 
 
@@ -55,7 +55,7 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{ifdraft}
 % \ifoptionfinal{}{\pagecolor[HTML]{FDF6E3}}
 % \ifoptionfinal{}{\pagecolor[HTML]{F8DF9C}}
-\ifoptionfinal{}{\pagecolor[HTML]{cac4b5}}
+% \ifoptionfinal{}{\pagecolor[HTML]{cac4b5}}
 
 % math
 \usepackage{amsmath,amssymb,amsfonts}
@@ -296,7 +296,7 @@ For the first research question I propose two systems: (a) \textit{Q-DeckRec} a 
 
 For the second research question, I propose an opponent recommendation system, called \textit{Engagement-Optimized Matchmaking} (EOMM). EOMM is the first system that formally treated matchmaking as an optimization problem to maximize player engagement quantitatively. Our system shows significant improvement in enhancing population-wise player engagement as compared to other matchmaking methods.
 
-The contribution of my dissertation is in developing three novel recommendation systems that target improving player engagement through increasing competence by giving players in-game element recommendation that increase possibility of a players feeling competent or entering a state of Flow by either increasing the probability of them winning or balancing the win/loss ratio to decrease the probability that they leave the game. There are much work left for future research, such as study systems tailored for more specific types of in-game elements, as well as those which can make central decisions on different types of recommendations for any particular player.
+The contribution of my dissertation is in developing three novel recommendation systems that target improving player engagement through increasing competence by giving players in-game element recommendation that increase possibility of a players feeling competent or entering a state of Flow by either increasing the probability of them winning or balancing the win/loss ratio to decrease the probability that they leave the game. There are much work left for future research, such as studying systems tailored for more specific types of in-game elements, as well as those which can make central decisions on different types of recommendations for any particular player.
 
 
 % Such variety and richness     match outcomes are believed to be closely related to player engagement and revenues made by game companies. Based on individual players' information and game contexts, personalized recommendation is one family of proposed methods, wherein dynamic game contents are recommended to players in order to influence their win rates. 
@@ -427,7 +427,7 @@ Last but by no means least, I would like to express my thankfulness to my wife, 
 \include{Chapters/Chapter_intro}
 \include{Chapters/Chapter_relatework}
 \include{Chapters/Chapter_qdeckrec}
-\include{Chapters/Chapter_draftart} 
+\include{Chapters/Chapter_draftart}
 \include{Chapters/Chapter_eomm} 
 \include{Chapters/Chapter_application}
 \include{Chapters/Chapter_future}

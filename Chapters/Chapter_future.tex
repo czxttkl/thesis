@@ -1,0 +1,53 @@
+\chapter{Limitation and Future Work} 
+
+\label{chapter:future} 
+
+At a high level, we envision several future directions for continuing the research in in-game element recommendation systems for improving player competence and player engagement. First, we are eagerly looking forward to testing our systems online in a systematic way. Currently, none of our proposed systems have been thoroughly tested online for player engagement. Admittedly, this would require deep cooperation with game developers and companies who support A/B testing on existing games. 
+
+Second, besides starting items, characters, and opponents, we would like to investigate recommendation systems on different kinds of in-game elements, including but not limited to weapons, maps, play strategies, teammates, and buildings. Each kind of in-game elements may require specific design of recommendation techniques. 
+
+Third, we did not investigate when we should deliver winning-effective recommendations such as winning-effective starting items and characters. We expect these recommendations should be triggered by some kinds of alerting models which determine, which players are in need of help otherwise would quit the game. However, more empirical experiments need to be conducted on recommendation systems integrated with such triggering models. As also discussed in Section~\ref{sec:ethical}, the decision of delivery of winning-effective recommendation should  depend on whom the player is playing against, i.e.  is it a human player or an AI program? This important information may have adverse effects, such as jeopardizing the opponent's competence and engagement, or mutually benefit the opponent who happens to look for more challenge?
+
+Lastly, we would like to design a unified recommendation system which could coordinate  recommendations of various in-game elements for improving overall engagement of each player. 
+
+This comes from our intuition that multiple in-game elements could simultaneously influence a player's engagement and recommendation on one type of in-game element could influence the effect of recommendation of other in-game elements. More research is needed to understand the inter-relationships of recommendations across different in-game elements and their influence on the player's overall engagement. To our best idea, such an idea has not been explored before.
+
+
+We also note several limitations of each of our proposed systems and wish to address them in the future. 
+
+The limitations of Q-DeckRec are: 
+\begin{enumerate}
+\item Q-DeckRec relies on AI proxies which are supposed to accurately model players' play styles. The current used AI proxy is only based on a greedy heuristic rather than trained on human play traces. Therefore, the optimal decks obtained in our experiments cannot be directly recommended to human players. Training human-like AI proxies and integrating them to Q-DeckRec will be an important direction in our future works. 
+
+\item Q-DeckRec currently only recommends winning-effective decks against specific known opponents, which requires to access the opponent's information, including play style and the deck already built. However, in certain match modes the opponent will not have been determined at the time of deck building. In such situations, Q-DeckRec can only recommend winning-effective decks against a hypothetical opponent with a predicted deck and play style.
+
+% welimitation of Q-DeckRec worth mentioning the player can usually infer roughly what cards are included from the cards played out by the opponent during the match~\citep{bursztein2016legend}. 
+
+\item We can also improve sample efficiency of Q-DeckRec. Currently, each training episode starts with a random initialized state. Were it generated from a card distribution learned from real matches, Q-DeckRec might focus on exploring in a smaller but more useful state space. 
+
+\item As online CCGs often release patches to introduce new cards and modify existing cards' in-game effects, we would like to investigate how Q-DeckRec can transfer and update its knowledge without totally re-training the model~\cite{taylor2009transfer}.
+
+\item We have only investigated the deck recommendation problem towards a single opponent. There remains a question of how to design the feature representation of state-action pairs in Q-DeckRec if the problem is extended to recommend winning-effective decks against a group of opponent decks. Naive feature representations for the opponent deck group could be simply concatenating each of the opponents' deck representation vector in the group. However this creates a large feature space which may not be efficient for learning. A more advanced feature representation may represent the opponent deck group in a continuous vector space, similar to word-embedding techniques from Natural Language Processing (NLP)~\cite{mikolov2013distributed}. We intend to investigate all of these feature representation approaches in the future.
+\end{enumerate}
+
+The limitations of DraftArtist are: 
+\begin{enumerate}
+\item We have not considered player-specific information, such as player skills in their selected characters, when recommending characters. It is possible that a character recommended by our algorithm, which is based solely on the current hero line-up, may not be played well by a player who is not familiar with it. Our algorithm can be extended to integrate player skills, by augmenting the game state with player information and training a more advanced win rate predictor as the reward function which takes as input both hero picks and player-specific information, once we have access to needed player-specific data.
+
+\item Were hero pick sequences from real match data available, we would integrate them as prior information to improve the tree policy and default policy in MCTS, thereby improving capabilities to build search trees more effectively and efficiently~\cite{gelly2007combining,chaslot2009adding}. 
+\item We would also like to investigate how our recommendation systems can be customized to account for additional drafting rules and extended to other real-world scenarios such as player drafting in sports~\cite{staw1995sunk}. 
+
+\end{enumerate}
+
+The limitations of EOMM are:
+\begin{enumerate}
+\item So far we have discussed EOMM in 1-vs-1 game scenarios. This framework also applies to match-based games that involve teams of players, where every component needs to be extended with additional care. The skill model can be simply applied to a team by adding up skills for all team members~\cite{herbrich:trueskill}. For churn prediction, we can use the same idea that one player's churn risk is conditionally independent with other players' states given that their influence on the player's own state, such as the game outcome, is known. Last, the minimum weight perfect matching algorithms for pairs are no longer applicable. Instead of a pair assignment, we seek a grouping assignment on a complete graph. A related area to investigate is perfect matching in hypergraphs~\cite{berge1984hypergraphs}, where an edge can connect more than two vertices. 
+
+%Furthermore, EOMM is not even limited to games. In broad applications, such as friend connection in a social network and 1-on-1 tutoring in online education, EOMM's formulation and optimization techniques still apply.
+
+\item We expect EOMM equipped with more advanced models, such as skill model and churn model, can have higher optimal bound. We will explore EOMM performance in more realistic situations, where practical restrictions are applied, such as network connectivity, regions and friend/black lists. More restrictions would result in fewer edges in the constructed graph of EOMM and perhaps faster algorithms for solving minimum perfect weight matching. 
+\end{enumerate}
+
+
+
+% \item We will explore EOMM in multi-player games with more than two players involved and efficient algorithms analogous to perfect matching algorithms within hypergraphs.
