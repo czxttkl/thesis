@@ -23,17 +23,17 @@ The limitations of Q-DeckRec are:
 
 \item We can also improve sample efficiency of Q-DeckRec. Currently, each training episode starts with a random initialized state. Were it generated from a card distribution learned from real matches, Q-DeckRec might focus on exploring in a smaller but more useful state space. 
 
-\item As online CCGs often release patches to introduce new cards and modify existing cards' in-game effects, we would like to investigate how Q-DeckRec can transfer and update its knowledge without totally re-training the model~\cite{taylor2009transfer}.
+\item As online CCGs often release patches to introduce new cards and modify existing cards' in-game effects, we would like to investigate how Q-DeckRec can transfer and update its knowledge without totally re-training the model~\citep{taylor2009transfer}.
 
-\item We have only investigated the deck recommendation problem towards a single opponent. There remains a question of how to design the feature representation of state-action pairs in Q-DeckRec if the problem is extended to recommend winning-effective decks against a group of opponent decks. Naive feature representations for the opponent deck group could be simply concatenating each of the opponents' deck representation vector in the group. However this creates a large feature space which may not be efficient for learning. A more advanced feature representation may represent the opponent deck group in a continuous vector space, similar to word-embedding techniques from Natural Language Processing (NLP)~\cite{mikolov2013distributed}. We intend to investigate all of these feature representation approaches in the future.
+\item We have only investigated the deck recommendation problem towards a single opponent. There remains a question of how to design the feature representation of state-action pairs in Q-DeckRec if the problem is extended to recommend winning-effective decks against a group of opponent decks. Naive feature representations for the opponent deck group could be simply concatenating each of the opponents' deck representation vector in the group. However this creates a large feature space which may not be efficient for learning. A more advanced feature representation may represent the opponent deck group in a continuous vector space, similar to word-embedding techniques from Natural Language Processing (NLP)~\citep{mikolov2013distributed}. We intend to investigate all of these feature representation approaches in the future.
 \end{enumerate}
 
 The limitations of DraftArtist are: 
 \begin{enumerate}
 \item We have not considered player-specific information, such as player skills in their selected characters, when recommending characters. It is possible that a character recommended by our algorithm, which is based solely on the current hero line-up, may not be played well by a player who is not familiar with it. Our algorithm can be extended to integrate player skills, by augmenting the game state with player information and training a more advanced win rate predictor as the reward function which takes as input both hero picks and player-specific information, once we have access to needed player-specific data.
 
-\item Were hero pick sequences from real match data available, we would integrate them as prior information to improve the tree policy and default policy in MCTS, thereby improving capabilities to build search trees more effectively and efficiently~\cite{gelly2007combining,chaslot2009adding}. 
-\item We would also like to investigate how our recommendation systems can be customized to account for additional drafting rules and extended to other real-world scenarios such as player drafting in sports~\cite{staw1995sunk}. 
+\item Were hero pick sequences from real match data available, we would integrate them as prior information to improve the tree policy and default policy in MCTS, thereby improving capabilities to build search trees more effectively and efficiently~\citep{gelly2007combining,chaslot2009adding}. 
+\item We would also like to investigate how our recommendation systems can be customized to account for additional drafting rules and extended to other real-world scenarios such as player drafting in sports~\citep{staw1995sunk}. 
 
 \end{enumerate}
 
